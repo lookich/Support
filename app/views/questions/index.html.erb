@@ -44,7 +44,7 @@
               </p>
             <% end %>
 
-              <% if current_user.id == question.user_id and correct.moderate == false %>
+              <% if current_user.name == answer.author and correct.moderate == false %>
                 <p>
                   <strong>Corrected by:</strong>
                   <%= correct.author %>
@@ -54,9 +54,6 @@
                   <%= correct.body %>
                 </p>
 
-                <%= current_user.inspect %>
-                <%= current_user.name %>
-                <%= question.user_id %>
                 <%= button_to "Submit", { :controller => "corrects", :action => "moderate", :id => correct.id} %>
               <% end %>
           <% end %>
