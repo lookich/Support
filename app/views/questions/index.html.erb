@@ -1,0 +1,70 @@
+<% if user_signed_in? %>
+  <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
+  <%= link_to('Create question', new_question_path, method: :get) %>
+<% else %>
+  <%= link_to('Login', new_user_session_path)  %> |
+  <%= link_to('Sign Up', new_user_registration_path)  %>
+<% end %>
+
+<h1> Question </h1>
+<% @questions.each do |question| %>
+  <p>
+    <strong>Question by:</strong>
+    <%= question.author %>
+  </p>
+
+  <p>
+    <%= question.title %>
+  </p>
+
+  <p>
+    <%= question.body %>
+  </p>
+
+  <p>
+    <h2>Answers</h2>
+      <% question.answers.map do |answer| %>
+        <p>
+          <strong>Answered by:</strong>
+          <%= answer.author %>
+        </p>
+
+        <p>
+          <%= answer.body %>
+        </p>
+          <% answer.corrects.map do |correct| %>
+            <% if correct.moderate == true %>
+              <p>
+                <strong>Corrected by:</strong>
+                <%= correct.author %>
+              </p>
+
+              <p>
+                <%= correct.body %>
+              </p>
+            <% end %>
+
+              <% if current_user.id == question.user_id and correct.moderate == false %>
+                <p>
+                  <strong>Corrected by:</strong>
+                  <%= correct.author %>
+                </p>
+
+                <p>
+                  <%= correct.body %>
+                </p>
+
+                <%= current_user.inspect %>
+                <%= current_user.name %>
+                <%= question.user_id %>
+                <%= button_to "Submit", { :controller => "corrects", :action => "moderate", :id => correct.id} %>
+              <% end %>
+          <% end %>
+
+            <%= link_to('Correct', new_question_answer_correct_path(question, answer))  %>
+      <% end %>
+    <%= link_to('Answer', new_question_answer_path(question)) %>
+  </p>
+
+  <hr/>
+<% end %>

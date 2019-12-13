@@ -1,0 +1,20 @@
+<%= form_for :correct, url: {action: "create"} do |f| %>
+    <% if @correct && @correct.errors.any? %>
+      <p>
+        <ul>
+          <% @correct.errors.full_messages.each do |msg|%>
+            <li><%= msg %> </li>
+          <% end %>
+        </ul>
+      </p>
+    <% end %>
+
+    <p>
+      <%= f.label :body %><br>
+      <%= f.text_area :body %>
+    </p>
+
+    <p>
+      <%= f.submit %><br>
+    </p>
+<% end %>
